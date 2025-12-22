@@ -74,7 +74,7 @@ def run_full_pipeline(yolo_model, sam_model, image_path, output_dir):
         temp_project_name = 'temp_sam_output'
         sam_output_root = os.path.join(output_dir, temp_project_name)
         
-        # Chạy SAM với save=True để tự động vẽ và lưu ảnh
+        # Chạy SAM tự động vẽ và lưu ảnh
         sam_model(result.orig_img, 
                   bboxes=boxes_tensor, 
                   verbose=False, 
@@ -85,12 +85,8 @@ def run_full_pipeline(yolo_model, sam_model, image_path, output_dir):
                   device=DEVICE)
         
         # 3. Xử lý file đầu ra
-        # Kiểm tra hai vị trí có khả năng nhất do cách Ultralytics lưu file
         
-        # Vị trí 1: Cấu trúc đầy đủ (project/name/predict/image0.jpg)
         sam_saved_path_1 = os.path.join(sam_output_root, 'predict', 'image0.jpg')
-        
-        # Vị trí 2: Cấu trúc rút gọn (project/name/image0.jpg) - thường xảy ra với 1 ảnh
         sam_saved_path_2 = os.path.join(sam_output_root, 'image0.jpg')
         
         final_file_path_to_use = None
