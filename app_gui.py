@@ -9,7 +9,7 @@ from tkinter import filedialog, messagebox
 try:
     import torch
     from ultralytics import YOLO, SAM
-    import shutil # Thêm thư viện để di chuyển và xóa thư mục
+    import shutil
 except ImportError:
     messagebox.showerror("Dependency Error", "PyTorch and Ultralytics must be installed. Please run: pip install torch torchvision torchaudio ultralytics opencv-python numpy")
     sys.exit(1)
@@ -21,7 +21,6 @@ SAM_MODEL_PATH = 'sam2_b.pt'
 OUTPUT_IMAGE_NAME = 'output_tumor_segmentation.jpg'
 
 # FIXED OUTPUT DIRECTORY
-# Sử dụng 'r' để đảm bảo các dấu gạch chéo ngược được xử lý chính xác trong đường dẫn Windows.
 FIXED_OUTPUT_DIR = r'C:\Users\admin\Downloads\Knowledge\YOLOV11\tumor_detect'
 
 # --- Device Detection ---
@@ -29,7 +28,6 @@ FIXED_OUTPUT_DIR = r'C:\Users\admin\Downloads\Knowledge\YOLOV11\tumor_detect'
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using device: {DEVICE}")
 
-# --- Core Model Logic: Gói gọn logic của bạn vào một hàm ---
 
 def load_models():
     """Tải mô hình YOLO và SAM."""
@@ -111,12 +109,10 @@ def run_full_pipeline(yolo_model, sam_model, image_path, output_dir):
 
             return final_output_path
         else:
-            # Nếu có boxes nhưng SAM không lưu file ở cả 2 vị trí
             print(f"ERROR: SAM ran but output file not found in expected locations:\n1. {sam_saved_path_1}\n2. {sam_saved_path_2}")
             return None
             
     else:
-        # Trường hợp YOLO không tìm thấy bất kỳ box nào
         print("YOLO found 0 bounding boxes for the input image.")
         return None # Không tìm thấy khối u hoặc segmentation thất bại
 
